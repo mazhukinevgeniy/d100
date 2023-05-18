@@ -1,5 +1,6 @@
 package org.example
 import java.awt.BorderLayout
+import java.awt.Dimension
 import java.awt.Window
 import javax.swing.JButton
 import javax.swing.JFrame
@@ -27,6 +28,8 @@ object Main {
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
         buildTopPanel(frame)
+
+        frame.minimumSize = Dimension(800, 600)
 
         frame.pack()
         frame.isVisible = true

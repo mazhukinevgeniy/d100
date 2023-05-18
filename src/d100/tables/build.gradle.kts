@@ -1,6 +1,7 @@
 plugins {
     id("java")
     kotlin("jvm") version "1.8.21"
+    id("app.cash.sqldelight") version "2.0.0"
 }
 
 group = "org.example"
