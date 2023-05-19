@@ -1,0 +1,10 @@
+selectByObject:
+SELECT *
+FROM ObjectComponents
+WHERE objectID = ?;
+
+insert:
+INSERT INTO ObjectComponents(objectID, collectionID)
+VALUES (?, ?);
+
+-- todo: remove, update, whatever

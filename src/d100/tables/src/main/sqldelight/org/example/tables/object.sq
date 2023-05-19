@@ -1,0 +1,9 @@
+selectAll:
+SELECT *
+FROM Objects;
+
+insert:
+INSERT INTO Objects(name)
+VALUES (?);
+
+-- todo: remove, update, whatever

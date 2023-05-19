@@ -1,8 +1,7 @@
-package org.example
+package org.example.tables
 
 class TableBase(name: String) {
 
     init {
-        val db =
     }
 }

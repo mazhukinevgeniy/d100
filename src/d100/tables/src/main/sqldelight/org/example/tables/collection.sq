@@ -1,0 +1,14 @@
+selectAll:
+SELECT *
+FROM Collections;
+
+selectSince:
+SELECT *
+FROM Collections
+WHERE collectionID > ?;
+
+insert:
+INSERT INTO Collections(name)
+VALUES (?);
+
+-- todo: remove, update, whatever

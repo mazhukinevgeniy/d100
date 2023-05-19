@@ -1,24 +1,42 @@
+-- collection ~ generation table
 CREATE TABLE IF NOT EXISTS Collections (
-    collectionID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    collectionID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
 );
 
+-- item ~ item of generation table
 CREATE TABLE IF NOT EXISTS Items (
-    itemID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    itemID INTEGER PRIMARY KEY AUTOINCREMENT,
     collectionID INTEGER,
     name TEXT NOT NULL,
     FOREIGN KEY (collectionID) REFERENCES Collections(collectionID)
 );
 
-CREATE INDEX itemsByCollection ON Items(collectionID);
+CREATE INDEX IF NOT EXISTS itemsByCollection ON Items(collectionID);
+
+-- object ~ composite object, made with multiple tables (e.g. character with allegiance, mood, height, age, etc)
+CREATE TABLE IF NOT EXISTS Objects (
+    objectID INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ObjectComponents (
+    objectID INTEGER,
+    collectionID INTEGER,
+    PRIMARY KEY (objectID, collectionID),
+    FOREIGN KEY (objectID) REFERENCES Objects(objectID),
+    FOREIGN KEY (collectionID) REFERENCES Collections(collectionID)
+);
+
+CREATE INDEX IF NOT EXISTS componentsByObject ON ObjectComponents(objectID);
 
 CREATE TABLE IF NOT EXISTS Sessions (
-    sessionID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
-    date DATE NOT NULL
+    sessionID INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS SessionNotes (
-    noteID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    noteID INTEGER PRIMARY KEY AUTOINCREMENT,
     sessionID INTEGER NOT NULL,
     notes TEXT NOT NULL,
     generated TEXT NOT NULL,

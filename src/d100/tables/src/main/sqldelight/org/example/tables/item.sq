@@ -1,0 +1,10 @@
+selectByCollectionId:
+SELECT *
+FROM Items
+WHERE collectionID = ?;
+
+insert:
+INSERT INTO Items(collectionID, name)
+VALUES (?, ?);
+
+-- todo: remove, update, whatever

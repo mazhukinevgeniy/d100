@@ -1,0 +1,8 @@
+selectBySession:
+SELECT *
+FROM SessionNotes
+WHERE sessionID = ?;
+
+insert:
+INSERT INTO SessionNotes(sessionID, notes, generated)
+VALUES (?, ?, ?);
