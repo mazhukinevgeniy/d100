@@ -4,43 +4,28 @@ import org.example.tables.Collections
 import org.example.tables.DbAccessor
 import javax.swing.AbstractListModel
 
-class CollectionsListModel : AbstractListModel<String>() {
+class CollectionsListModel : InMemoryModelBase<Collections>(
+    object : QueryRunner<Collections> {
+        private val queries = DbAccessor.database.collectionQueries
 
-    private val queries = DbAccessor.database.collectionQueries
-
-    private val data = ArrayList<Collections>(
-        queries.selectAll().executeAsList()
-    )
-
-    override fun getSize(): Int {
-        return data.size
-    }
-
-    override fun getElementAt(index: Int): String {
-        require(index in data.indices) {
-            "invalid access to CollectionsListModel: $index not in ${data.indices}"
+        override fun insert(value: String) {
+            queries.insert(value)
         }
-        return data[index].name
-    }
 
-    fun add(name: String) {
-        queries.insert(name)
+        override fun selectAll(): List<Collections> {
+            return queries.selectAll().executeAsList()
+        }
 
-        if (data.isEmpty()) {
-            data.addAll(queries.selectAll().executeAsList())
-            if (data.isNotEmpty()) {
-                fireIntervalAdded(this, 0, data.size - 1)
-            }
-        } else {
-            val lastSize = data.size
-            data.addAll(queries.selectSince(data.last().collectionID).executeAsList())
-            if (data.size > lastSize) {
-                fireIntervalAdded(this, lastSize, data.size - 1)
-            }
+        override fun selectSince(id: Long): List<Collections> {
+            return queries.selectSince(id).executeAsList()
         }
     }
+) {
+    override fun toId(item: Collections): Long {
+        return item.collectionID
+    }
 
-    fun remove(id: Long) {
-        TODO("impl")
+    override fun toString(item: Collections): String {
+        return item.name
     }
 }

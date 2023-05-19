@@ -1,13 +1,18 @@
 package org.example.controller
 
 import org.example.listmodels.CollectionsListModel
+import org.example.listmodels.ItemListModel
 import org.example.ui.Screen
 import org.example.ui.ScreenManager
 import java.awt.Container
 
 open class ModelProvider {
     val collectionsListModel: CollectionsListModel by lazy {
-        CollectionsListModel()
+        return@lazy CollectionsListModel()
+    }
+
+    fun createItemModel(collectionId: Long): ItemListModel {
+        return ItemListModel(collectionId)
     }
 }
 

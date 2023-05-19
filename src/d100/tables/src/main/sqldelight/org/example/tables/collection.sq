@@ -1,11 +1,13 @@
 selectAll:
 SELECT *
-FROM Collections;
+FROM Collections
+ORDER BY collectionID;
 
 selectSince:
 SELECT *
 FROM Collections
-WHERE collectionID > ?;
+WHERE collectionID > ?
+ORDER BY collectionID;
 
 insert:
 INSERT INTO Collections(name)

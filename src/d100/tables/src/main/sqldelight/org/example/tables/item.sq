@@ -1,7 +1,14 @@
 selectByCollectionId:
 SELECT *
 FROM Items
-WHERE collectionID = ?;
+WHERE collectionID = ?
+ORDER BY itemID;
+
+selectByCollectionIdSinceItemId:
+SELECT *
+FROM Items
+WHERE collectionID = ? AND itemID > ?
+ORDER BY itemID;
 
 insert:
 INSERT INTO Items(collectionID, name)
