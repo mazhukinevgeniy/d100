@@ -15,7 +15,9 @@ class TablesScreen(
     private val itemModels: HashMap<Long, ExtendedListModel> = HashMap()
 
     private val container: Container by lazy {
-        val itemCardPane = JPanel(CardLayout())
+        val itemCardPane = JPanel(CardLayout()).also {
+            it.minimumSize = Dimension(300, 400)
+        }
 
         JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT,
