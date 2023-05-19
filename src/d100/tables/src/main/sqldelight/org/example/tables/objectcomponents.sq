@@ -4,6 +4,14 @@ FROM ObjectComponents
 WHERE objectID = ?
 ORDER BY collectionID;
 
+selectWithTitles:
+SELECT a.collectionID collectionID, b.name name
+FROM ObjectComponents a
+INNER JOIN Collections b
+ON a.collectionID = b.collectionID
+WHERE a.objectID = ?
+ORDER BY a.collectionID;
+
 insert:
 INSERT INTO ObjectComponents(objectID, collectionID)
 VALUES (?, ?);

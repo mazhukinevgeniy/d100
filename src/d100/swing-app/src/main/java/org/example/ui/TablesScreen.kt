@@ -12,7 +12,7 @@ import javax.swing.*
 class TablesScreen(
     contentPane: Container, modelProvider: ModelProvider
 ) : ScreenBase(contentPane, Screen.Tables) {
-    private val itemModels: HashMap<Long, ExtendedListModel> = HashMap()
+    private val itemModels: HashMap<Long, ExtendedListModel<String>> = HashMap()
 
     private val container: Container by lazy {
         val itemCardPane = JPanel(CardLayout()).also {

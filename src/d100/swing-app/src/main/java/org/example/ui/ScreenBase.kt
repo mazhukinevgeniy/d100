@@ -19,7 +19,7 @@ abstract class ScreenBase(
     fun activate() {
         ensureView
         (contentPane.layout as CardLayout).show(
-            contentPane, Screen.Tables.toString()
+            contentPane, screen.toString()
         )
     }
 }
