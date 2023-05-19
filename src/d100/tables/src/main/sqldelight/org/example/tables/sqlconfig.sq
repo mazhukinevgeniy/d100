@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS Collections (
+    collectionID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Items (
+    itemID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    collectionID INTEGER,
+    name TEXT NOT NULL,
+    FOREIGN KEY (collectionID) REFERENCES Collections(collectionID)
+);
+
+CREATE INDEX itemsByCollection ON Items(collectionID);
+
+CREATE TABLE IF NOT EXISTS Sessions (
+    sessionID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS SessionNotes (
+    noteID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+    sessionID INTEGER NOT NULL,
+    notes TEXT NOT NULL,
+    generated TEXT NOT NULL,
+    FOREIGN KEY (sessionID) REFERENCES Sessions(sessionID)
+);
