@@ -1,0 +1,7 @@
+selectAll:
+SELECT *
+FROM Sessions;
+
+insert:
+INSERT INTO Sessions(timestamp)
+VALUES (?);
