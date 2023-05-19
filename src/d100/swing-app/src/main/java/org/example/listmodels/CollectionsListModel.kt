@@ -4,6 +4,12 @@ import org.example.tables.Collections
 import org.example.tables.DbAccessor
 import javax.swing.AbstractListModel
 
+class CollectionPickerView(val source: Collections) {
+    override fun toString(): String {
+        return source.name
+    }
+}
+
 class CollectionsListModel : InMemoryModelBase<Collections>(
     object : QueryRunner<Collections> {
         private val queries = DbAccessor.database.collectionQueries
@@ -27,5 +33,9 @@ class CollectionsListModel : InMemoryModelBase<Collections>(
 
     override fun toString(item: Collections): String {
         return item.name
+    }
+
+    fun simplePickerModel(): Array<CollectionPickerView> {
+        return data.map { CollectionPickerView(it) }.toTypedArray()
     }
 }

@@ -29,7 +29,7 @@ class ObjectsScreen(
                     override fun handleItemSelection(id: Long) {
                         if (id !in objectComponentModels) {
                             objectComponentModels[id] = modelProvider.createObjectComponentModel(id).also { newModel ->
-                                itemCardPane.add(ObjectConstructor(newModel), id.toString())
+                                itemCardPane.add(ObjectConstructor(newModel, modelProvider.collectionsListModel), id.toString())
                             }
                         }
                         (itemCardPane.layout as CardLayout).show(itemCardPane, id.toString())
