@@ -2,7 +2,7 @@ selectByObject:
 SELECT *
 FROM ObjectComponents
 WHERE objectID = ?
-ORDER BY collectionID;
+ORDER BY linkID;
 
 selectWithTitles:
 SELECT a.collectionID collectionID, b.name name
@@ -10,7 +10,7 @@ FROM ObjectComponents a
 INNER JOIN Collections b
 ON a.collectionID = b.collectionID
 WHERE a.objectID = ?
-ORDER BY a.collectionID;
+ORDER BY a.linkID;
 
 insert:
 INSERT INTO ObjectComponents(objectID, collectionID)

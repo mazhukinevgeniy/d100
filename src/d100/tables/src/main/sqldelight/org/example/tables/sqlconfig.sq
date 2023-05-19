@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS Objects (
 );
 
 CREATE TABLE IF NOT EXISTS ObjectComponents (
+    linkID INTEGER PRIMARY KEY AUTOINCREMENT,
     objectID INTEGER NOT NULL,
     collectionID INTEGER NOT NULL,
-    PRIMARY KEY (objectID, collectionID),
     FOREIGN KEY (objectID) REFERENCES Objects(objectID),
     FOREIGN KEY (collectionID) REFERENCES Collections(collectionID)
 );
