@@ -12,8 +12,8 @@ interface QueryRunner<ItemType> {
 
 abstract class InMemoryModelBase<ItemType>(
     private val queryRunner: QueryRunner<ItemType>
-) : AbstractListModel<String>(), ExtendedListModel {
-    private val data = ArrayList<ItemType>(queryRunner.selectAll())
+) : AbstractListModel<String>(), ExtendedListModel<String> {
+    protected val data = ArrayList<ItemType>(queryRunner.selectAll())
 
     final override fun getSize(): Int {
         return data.size

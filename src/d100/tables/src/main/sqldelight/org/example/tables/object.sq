@@ -3,6 +3,12 @@ SELECT *
 FROM Objects
 ORDER BY objectID;
 
+selectSince:
+SELECT *
+FROM Objects
+WHERE objectID > ?
+ORDER BY objectID;
+
 insert:
 INSERT INTO Objects(name)
 VALUES (?);

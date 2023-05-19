@@ -6,7 +6,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
-class ContentColumn<Model : ExtendedListModel>(
+class ContentColumn<Model : ExtendedListModel<String>>(
     private val model: Model, itemName: String
 ) : JPanel(GridBagLayout()) {
     public interface Subscriber {
