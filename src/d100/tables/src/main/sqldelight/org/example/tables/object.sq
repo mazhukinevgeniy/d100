@@ -1,6 +1,7 @@
 selectAll:
 SELECT *
-FROM Objects;
+FROM Objects
+ORDER BY objectID;
 
 insert:
 INSERT INTO Objects(name)

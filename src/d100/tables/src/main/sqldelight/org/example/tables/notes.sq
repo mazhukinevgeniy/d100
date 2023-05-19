@@ -1,7 +1,8 @@
 selectBySession:
 SELECT *
 FROM SessionNotes
-WHERE sessionID = ?;
+WHERE sessionID = ?
+ORDER BY noteID;
 
 insert:
 INSERT INTO SessionNotes(sessionID, notes, generated)

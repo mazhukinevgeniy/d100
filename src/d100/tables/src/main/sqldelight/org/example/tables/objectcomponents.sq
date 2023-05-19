@@ -1,7 +1,8 @@
 selectByObject:
 SELECT *
 FROM ObjectComponents
-WHERE objectID = ?;
+WHERE objectID = ?
+ORDER BY collectionID;
 
 insert:
 INSERT INTO ObjectComponents(objectID, collectionID)
