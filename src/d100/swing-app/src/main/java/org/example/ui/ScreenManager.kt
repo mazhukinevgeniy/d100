@@ -13,7 +13,7 @@ class ScreenManager(contentPane: Container, modelProvider: ModelProvider) {
     private val screens = mapOf(
         Screen.Tables to TablesScreen(contentPane, modelProvider),
         Screen.Objects to ObjectsScreen(contentPane, modelProvider),
-        Screen.Game to GMScreen(contentPane)
+        Screen.Game to GMScreen(contentPane, modelProvider)
     )
 
     fun activateScreen(screen: Screen) {
