@@ -1,10 +1,11 @@
 plugins {
     id("java")
     kotlin("jvm") version "1.8.21"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "org.example"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -22,4 +23,9 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(11)
+}
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.example.Main"
+    }
 }

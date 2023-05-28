@@ -3,10 +3,7 @@ package org.example.ui
 import org.example.controller.ModelProvider
 import org.example.ui.components.GeneratedObjectList
 import org.example.ui.components.PromptTextField
-import java.awt.Component
-import java.awt.Container
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import java.awt.*
 import javax.swing.*
 
 class GMScreen(
@@ -16,6 +13,7 @@ class GMScreen(
     private val container: Container by lazy {
         JPanel(GridBagLayout()).also { root ->
             val constraints = GridBagConstraints()
+            constraints.insets = Insets(5, 5, 5, 5)
 
             constraints.gridx = 0
             constraints.gridy = 0
@@ -30,11 +28,13 @@ class GMScreen(
             constraints.gridx = 0
             constraints.gridy = 1
             constraints.gridwidth = 1
-            root.add(JLabel("note editor"), constraints)
+            root.add(JLabel("note:"), constraints)
 
             constraints.gridx = 1
             constraints.gridy = 1
             val noteField = PromptTextField("Type note here...")
+            noteField.preferredSize = Dimension(300, 30)
+            noteField.minimumSize = Dimension(100, 30)
             root.add(noteField, constraints)
 
             constraints.gridx = 2

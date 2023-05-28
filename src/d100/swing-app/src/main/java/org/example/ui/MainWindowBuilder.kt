@@ -39,6 +39,8 @@ class MainWindowBuilder {
         val frame = JFrame("d100")
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
+        frame.iconImages = null
+
         buildTopPanel(frame)
 
         frame.minimumSize = Dimension(800, 600)
