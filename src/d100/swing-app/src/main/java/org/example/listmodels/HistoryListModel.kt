@@ -4,7 +4,6 @@ import org.example.controller.ModelProvider
 import org.example.tables.DbAccessor
 import org.example.tables.SelectAllIds
 import org.example.tables.SelectComponents
-import java.security.CodeSource
 import javax.swing.AbstractListModel
 
 class HistoryItem(

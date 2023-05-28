@@ -3,15 +3,17 @@ package org.example.ui.components
 import org.example.listmodels.HistoryItem
 import org.example.listmodels.HistoryListModel
 import java.awt.*
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
 import java.awt.font.TextAttribute
 import javax.swing.BorderFactory
-import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
-import javax.swing.text.AttributeSet.FontAttribute
+import kotlin.math.max
+import kotlin.math.min
 
 private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
     init {
@@ -64,7 +66,7 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
 
 class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
     init {
-        layout = FlowLayout(FlowLayout.LEADING, 10, 10)
+        layout = FlowLayout(FlowLayout.LEFT, 10, 10)
         componentOrientation = ComponentOrientation.LEFT_TO_RIGHT
 
         model.addListDataListener(object : ListDataListener {
@@ -77,21 +79,49 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
                 for (i in e.index0..e.index1) {
                     root.add(ObjectView(model.getDetailedObject(i)), 0)
                 }
-                root.preferredSize = Dimension(root.parent.width, root.height)
-                root.revalidate()
+                updatePreferredSize()
             }
 
             override fun intervalRemoved(e: ListDataEvent?) {
-                TODO("Not yet implemented")
             }
 
             override fun contentsChanged(e: ListDataEvent?) {
-                TODO("Not yet implemented")
             }
         })
 
         for (i in 0 until model.size) {
             add(ObjectView(model.getDetailedObject(i)), 0)
+        }
+
+        updatePreferredSize()
+        addComponentListener(object : ComponentListener {
+            override fun componentResized(e: ComponentEvent?) {
+                updatePreferredSize()
+            }
+
+            override fun componentMoved(e: ComponentEvent?) {
+            }
+
+            override fun componentShown(e: ComponentEvent?) {
+            }
+
+            override fun componentHidden(e: ComponentEvent?) {
+            }
+        })
+    }
+
+    private fun updatePreferredSize() {
+        val dimension = Dimension(400, 400)
+        for (item in components) {
+            dimension.width = max(dimension.width, item.x + item.width)
+            dimension.height = max(dimension.height, item.y + item.height)
+        }
+        if (parent != null) {
+            dimension.width = min(dimension.width, parent.width)
+        }
+        if (preferredSize != dimension) {
+            preferredSize = dimension
+            revalidate()
         }
     }
 }
