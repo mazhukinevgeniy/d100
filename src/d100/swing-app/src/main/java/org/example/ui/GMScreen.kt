@@ -60,10 +60,13 @@ class GMScreen(
             constraints.weightx = 1.0
             constraints.weighty = 1.0
             root.add(
-                JScrollPane(GeneratedObjectList(modelProvider.objectGenerationHistoryListModel),
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-            ), constraints)
+                JScrollPane(
+                    GeneratedObjectList(modelProvider.objectGenerationHistoryListModel),
+                    ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+                ),
+                constraints
+            )
         }
     }
 

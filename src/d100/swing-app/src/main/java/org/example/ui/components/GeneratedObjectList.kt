@@ -2,30 +2,24 @@ package org.example.ui.components
 
 import org.example.listmodels.HistoryItem
 import org.example.listmodels.HistoryListModel
-import java.awt.Font
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import java.awt.*
 import java.awt.font.TextAttribute
+import javax.swing.BorderFactory
 import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
+import javax.swing.text.AttributeSet.FontAttribute
 
 private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
     init {
         val constraints = GridBagConstraints()
 
-        constraints.gridx = 1
-        constraints.gridy = 0
-        constraints.gridwidth = 2
-        add(JLabel(historyItem.objectName), constraints)
-
         constraints.gridwidth = 1
+        constraints.gridy = 0
         for (row in historyItem.components) {
-            constraints.gridy++
-
             constraints.gridx = 0
             val rerollButton = JButton("\uD83D\uDD04").also {
                 it.font = Font.getFont(Font.SERIF)
@@ -44,8 +38,9 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
                     it.text = historyItem.reroll(row).generatedValue
                 }
             }, constraints)
+
+            constraints.gridy++
         }
-        constraints.gridy++
 
         constraints.gridx = 0
         add(JLabel("Note: "), constraints)
@@ -56,12 +51,21 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
                 TextAttribute.WEIGHT to TextAttribute.WEIGHT_SEMIBOLD
             ))
         }, constraints)
+
+        border = BorderFactory.createTitledBorder(historyItem.objectName).also {
+            it.titleFont = it.titleFont.deriveFont(
+                mapOf(
+                    TextAttribute.WEIGHT to TextAttribute.WEIGHT_BOLD
+                )
+            )
+        }
     }
 }
 
 class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
     init {
-        layout = BoxLayout(this, BoxLayout.Y_AXIS)
+        layout = FlowLayout(FlowLayout.LEADING, 10, 10)
+        componentOrientation = ComponentOrientation.LEFT_TO_RIGHT
 
         model.addListDataListener(object : ListDataListener {
             val root = this@GeneratedObjectList
@@ -73,6 +77,7 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
                 for (i in e.index0..e.index1) {
                     root.add(ObjectView(model.getDetailedObject(i)), 0)
                 }
+                root.preferredSize = Dimension(root.parent.width, root.height)
                 root.revalidate()
             }
 
