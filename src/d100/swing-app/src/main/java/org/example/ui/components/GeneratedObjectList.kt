@@ -27,9 +27,10 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
             constraints.gridy++
 
             constraints.gridx = 0
-            add(JButton("\uD83D\uDD04").also {
+            val rerollButton = JButton("\uD83D\uDD04").also {
                 it.font = Font.getFont(Font.SERIF)
-            }, constraints)
+            }
+            add(rerollButton, constraints)
 
             constraints.gridx = 1
             add(JLabel("${row.tableName}: "), constraints)
@@ -39,6 +40,9 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
                 it.font = it.font.deriveFont(mapOf(
                     TextAttribute.WEIGHT to TextAttribute.WEIGHT_SEMIBOLD
                 ))
+                rerollButton.addActionListener { _ ->
+                    it.text = historyItem.reroll(row).generatedValue
+                }
             }, constraints)
         }
         constraints.gridy++
