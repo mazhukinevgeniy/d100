@@ -15,6 +15,9 @@ open class ModelProvider {
     val collectionsListModel: CollectionsListModel by lazy {
         return@lazy CollectionsListModel(this)
     }
+    val objectGenerationHistoryListModel: HistoryListModel by lazy {
+        return@lazy HistoryListModel()
+    }
 
     fun getCollectionModel(collectionId: Long): CollectionListModel {
         if (collectionId !in collectionModels) {

@@ -1,8 +1,0 @@
-selectAll:
-SELECT *
-FROM Sessions
-ORDER BY sessionID;
-
-insert:
-INSERT INTO Sessions(timestamp)
-VALUES (?);
