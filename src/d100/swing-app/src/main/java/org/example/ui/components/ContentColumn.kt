@@ -5,6 +5,8 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
+import javax.swing.event.ListDataEvent
+import javax.swing.event.ListDataListener
 
 class ContentColumn<Model : ExtendedListModel<String>>(
     private val model: Model, itemName: String
@@ -14,6 +16,7 @@ class ContentColumn<Model : ExtendedListModel<String>>(
     }
 
     private val subscribers: ArrayList<Subscriber> = ArrayList()
+    private val list = JList(model)
 
     init {
         val constraints = GridBagConstraints().also {
@@ -40,28 +43,51 @@ class ContentColumn<Model : ExtendedListModel<String>>(
         constraints.gridheight = GridBagConstraints.REMAINDER
         constraints.weighty = 1.0
 
-        fun onSelection(list: JList<String>) {
-            if (list.selectedIndex in 0 until model.size) {
-                val id = model.itemId(list.selectedIndex)
+        add(list.also {
+            it.addListSelectionListener { _ ->
+                onSelection()
+            }
+            it.selectionMode = ListSelectionModel.SINGLE_SELECTION
+            it.layoutOrientation = JList.HORIZONTAL_WRAP
+            it.visibleRowCount = -1
+            if (model.size > 0) {
+                it.selectedIndex = 0
+            } else {
+                model.addListDataListener(object : ListDataListener {
+                    override fun intervalAdded(e: ListDataEvent?) {
+                        if (e?.index0 == 0) {
+                            it.selectedIndex = 0
+                        }
+                    }
+
+                    override fun intervalRemoved(e: ListDataEvent?) {
+                        //ok
+                    }
+
+                    override fun contentsChanged(e: ListDataEvent?) {
+                        //ok
+                    }
+                })
+            }
+            JScrollPane(it)
+        }, constraints)
+    }
+
+    private fun onSelection(singleSubscriber: Subscriber? = null) {
+        if (list.selectedIndex in 0 until model.size) {
+            val id = model.itemId(list.selectedIndex)
+            if (singleSubscriber != null) {
+                singleSubscriber.handleItemSelection(id)
+            } else {
                 for (subscriber in subscribers) {
                     subscriber.handleItemSelection(id)
                 }
             }
         }
-
-        add(JList(model).also {
-            it.addListSelectionListener { _ ->
-                onSelection(it)
-                // TODO: why does it not work on first click?
-            }
-            it.selectionMode = ListSelectionModel.SINGLE_SELECTION
-            it.layoutOrientation = JList.HORIZONTAL_WRAP
-            it.visibleRowCount = -1
-            JScrollPane(it)
-        }, constraints)
     }
 
     fun subscribe(subscriber: Subscriber) {
         subscribers.add(subscriber)
+        onSelection(subscriber)
     }
 }
