@@ -8,6 +8,7 @@ import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.ListSelectionModel
+import javax.swing.border.EmptyBorder
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
 
@@ -50,6 +51,7 @@ class ContentColumn<Model : ExtendedListModel<String>>(
             it.addListSelectionListener { _ ->
                 onSelection()
             }
+            it.border = EmptyBorder(2, 2, 2, 2)
             it.selectionMode = ListSelectionModel.SINGLE_SELECTION
             it.layoutOrientation = JList.HORIZONTAL_WRAP
             it.visibleRowCount = -1
@@ -64,11 +66,9 @@ class ContentColumn<Model : ExtendedListModel<String>>(
                     }
 
                     override fun intervalRemoved(e: ListDataEvent?) {
-                        //ok
                     }
 
                     override fun contentsChanged(e: ListDataEvent?) {
-                        //ok
                     }
                 })
             }

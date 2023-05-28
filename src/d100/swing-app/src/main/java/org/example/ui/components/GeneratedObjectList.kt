@@ -79,7 +79,7 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
                 for (i in e.index0..e.index1) {
                     root.add(ObjectView(model.getDetailedObject(i)), 0)
                 }
-                updatePreferredSize()
+                updatePreferredSize(true)
             }
 
             override fun intervalRemoved(e: ListDataEvent?) {
@@ -93,10 +93,10 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
             add(ObjectView(model.getDetailedObject(i)), 0)
         }
 
-        updatePreferredSize()
+        updatePreferredSize(false)
         addComponentListener(object : ComponentListener {
             override fun componentResized(e: ComponentEvent?) {
-                updatePreferredSize()
+                updatePreferredSize(false)
             }
 
             override fun componentMoved(e: ComponentEvent?) {
@@ -110,7 +110,7 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
         })
     }
 
-    private fun updatePreferredSize() {
+    private fun updatePreferredSize(alwaysRevalidate: Boolean) {
         val dimension = Dimension(400, 400)
         for (item in components) {
             dimension.width = max(dimension.width, item.x + item.width)
@@ -121,6 +121,8 @@ class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
         }
         if (preferredSize != dimension) {
             preferredSize = dimension
+            revalidate()
+        } else if (alwaysRevalidate) {
             revalidate()
         }
     }
