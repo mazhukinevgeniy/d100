@@ -3,8 +3,12 @@ package org.example.ui
 import org.example.controller.ModelProvider
 import org.example.listmodels.ExtendedListModel
 import org.example.ui.components.ContentColumn
-import java.awt.*
-import javax.swing.*
+import java.awt.CardLayout
+import java.awt.Component
+import java.awt.Container
+import java.awt.Dimension
+import javax.swing.JPanel
+import javax.swing.JSplitPane
 
 
 class TablesScreen(

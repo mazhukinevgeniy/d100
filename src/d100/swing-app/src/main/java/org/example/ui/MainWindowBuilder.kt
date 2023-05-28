@@ -1,14 +1,12 @@
 package org.example.ui
 
 import org.example.controller.AppController
-import org.example.tables.DbAccessor
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.Dimension
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
-import javax.swing.JTextField
 
 class MainWindowBuilder {
 

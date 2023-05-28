@@ -12,7 +12,6 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
-import javax.swing.text.AttributeSet.FontAttribute
 
 private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
     init {

@@ -6,7 +6,6 @@ import org.example.tables.SelectComponents
 import org.example.ui.Screen
 import org.example.ui.ScreenManager
 import java.awt.Container
-import java.util.Date
 import kotlin.random.Random
 
 open class ModelProvider {

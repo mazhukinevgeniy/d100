@@ -3,7 +3,6 @@ package org.example.listmodels
 import org.example.controller.ModelProvider
 import org.example.tables.Collections
 import org.example.tables.DbAccessor
-import javax.swing.AbstractListModel
 
 class CollectionPickerView(val source: Collections) {
     override fun toString(): String {

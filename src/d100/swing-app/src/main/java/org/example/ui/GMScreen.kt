@@ -1,7 +1,6 @@
 package org.example.ui
 
 import org.example.controller.ModelProvider
-import org.example.tables.Objects
 import org.example.ui.components.GeneratedObjectList
 import org.example.ui.components.PromptTextField
 import java.awt.Component
