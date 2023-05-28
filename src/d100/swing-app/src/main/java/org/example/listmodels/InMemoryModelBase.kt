@@ -19,9 +19,13 @@ abstract class InMemoryModelBase<ItemType>(
         return data.size
     }
 
-    final override fun getElementAt(index: Int): String {
+    fun getUnderlyingItemAt(index: Int): ItemType {
         require(index in data.indices)
-        return toString(data[index])
+        return data[index]
+    }
+
+    final override fun getElementAt(index: Int): String {
+        return toString(getUnderlyingItemAt(index))
     }
 
     final override fun add(value: String) {
@@ -30,14 +34,21 @@ abstract class InMemoryModelBase<ItemType>(
         if (data.isEmpty()) {
             data.addAll(queryRunner.selectAll())
             if (data.isNotEmpty()) {
-                fireIntervalAdded(this, 0, data.size - 1)
+                fireIntervalAddedWithRawItem(0, data.size - 1)
             }
         } else {
             val lastSize = data.size
             data.addAll(queryRunner.selectSince(toId(data.last())))
             if (data.size > lastSize) {
-                fireIntervalAdded(this, lastSize, data.size - 1)
+                fireIntervalAddedWithRawItem(lastSize, data.size - 1)
             }
+        }
+    }
+
+    private fun fireIntervalAddedWithRawItem(first: Int, last: Int) {
+        fireIntervalAdded(this, first, last)
+        for (i in first..last) {
+            onItemAdded(data[i])
         }
     }
 
@@ -49,4 +60,8 @@ abstract class InMemoryModelBase<ItemType>(
     abstract fun toString(item: ItemType): String
 
     abstract fun toId(item: ItemType): Long
+
+    open fun onItemAdded(newItem: ItemType) {
+        // do nothing by default
+    }
 }

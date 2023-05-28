@@ -28,7 +28,7 @@ class ObjectsScreen(
                 it.subscribe(object : ContentColumn.Subscriber {
                     override fun handleItemSelection(id: Long) {
                         if (id !in objectComponentModels) {
-                            objectComponentModels[id] = modelProvider.createObjectComponentModel(id).also { newModel ->
+                            objectComponentModels[id] = modelProvider.getObjectComponentModel(id).also { newModel ->
                                 itemCardPane.add(ObjectConstructor(newModel, modelProvider.collectionsListModel), id.toString())
                             }
                         }

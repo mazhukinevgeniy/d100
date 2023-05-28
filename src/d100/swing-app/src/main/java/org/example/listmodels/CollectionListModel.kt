@@ -1,11 +1,9 @@
 package org.example.listmodels
 
-import org.example.tables.Collections
 import org.example.tables.DbAccessor
 import org.example.tables.Items
-import javax.swing.event.ListDataListener
 
-class ItemListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
+class CollectionListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
     object : QueryRunner<Items> {
         private val queries = DbAccessor.database.itemQueries
 
