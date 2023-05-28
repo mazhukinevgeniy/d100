@@ -1,6 +1,7 @@
 package org.example.listmodels
 
 import org.example.controller.ModelProvider
+import org.example.tables.DbAccessor
 import org.example.tables.SelectAllIds
 import org.example.tables.SelectComponents
 import javax.swing.AbstractListModel
@@ -12,8 +13,8 @@ data class HistoryItem(
 )
 
 class HistoryListModel(private val modelProvider: ModelProvider) : AbstractListModel<SelectAllIds>() {
-
-    private val data = ArrayList<SelectAllIds>()
+    private val queries = DbAccessor.database.generationQueries
+    private val data = ArrayList<SelectAllIds>(queries.selectAllIds().executeAsList())
 
     override fun getSize(): Int {
         return data.size
@@ -25,10 +26,26 @@ class HistoryListModel(private val modelProvider: ModelProvider) : AbstractListM
     }
 
     fun generateObject(objectId: Long, note: String) {
-        //todo generation
-        //todo insertions
+        queries.insertGeneration(objectId, note)
+        val selected = if (data.isEmpty()) {
+            queries.selectAllIds().executeAsList()
+        } else {
+            queries.selectGenerationIdsSince(data.last().generationID).executeAsList().map {
+                SelectAllIds(it.generationID, it.objectID, it.notes, it.objectName)
+            }
+        }
+        data.addAll(selected)
+        check(selected.size == 1)
 
-        data.add(SelectAllIds(0, objectId, note, "ObjectName"))
+        val objectModel = modelProvider.getObjectComponentModel(objectId)
+        for (i in 0 until objectModel.size) {
+            val componentId = objectModel.itemId(i)
+            val generated = modelProvider.getCollectionModel(componentId).pickRandom(modelProvider.random)
+            if (generated != null) {
+                queries.insertComponent(selected[0].generationID, generated.itemID)
+            }
+        }
+
         fireIntervalAdded(this,data.size - 1, data.size - 1)
     }
 

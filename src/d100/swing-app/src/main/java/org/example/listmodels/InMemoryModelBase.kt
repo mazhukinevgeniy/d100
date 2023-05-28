@@ -1,6 +1,7 @@
 package org.example.listmodels
 
 import javax.swing.AbstractListModel
+import javax.swing.ComboBoxModel
 
 interface QueryRunner<ItemType> {
 
@@ -12,8 +13,9 @@ interface QueryRunner<ItemType> {
 
 abstract class InMemoryModelBase<ItemType>(
     private val queryRunner: QueryRunner<ItemType>
-) : AbstractListModel<String>(), ExtendedListModel<String> {
+) : AbstractListModel<String>(), ExtendedListModel<String>, ComboBoxModel<String> {
     protected val data = ArrayList<ItemType>(queryRunner.selectAll())
+    private var selection: Any? = null
 
     final override fun getSize(): Int {
         return data.size
@@ -55,6 +57,15 @@ abstract class InMemoryModelBase<ItemType>(
     final override fun itemId(index: Int): Long {
         require(index in data.indices)
         return toId(data[index])
+    }
+
+    override fun setSelectedItem(anItem: Any?) {
+        selection = anItem
+        fireContentsChanged(this, -1, -1)
+    }
+
+    override fun getSelectedItem(): Any? {
+        return selection
     }
 
     abstract fun toString(item: ItemType): String

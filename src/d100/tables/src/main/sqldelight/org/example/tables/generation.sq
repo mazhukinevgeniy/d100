@@ -7,6 +7,16 @@ INNER JOIN
 ON a.objectID = b.objectID
 ORDER BY a.generationID;
 
+selectGenerationIdsSince:
+SELECT a.generationID generationID, a.objectID objectID, a.notes notes, b.name objectName
+FROM
+    ObjectGenerations a
+INNER JOIN
+    Objects b
+ON a.objectID = b.objectID
+WHERE a.generationID > ?
+ORDER BY a.generationID;
+
 selectComponents:
 SELECT
     e.name tableName,

@@ -2,6 +2,7 @@ package org.example.listmodels
 
 import org.example.tables.DbAccessor
 import org.example.tables.Items
+import kotlin.random.Random
 
 class CollectionListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
     object : QueryRunner<Items> {
@@ -26,5 +27,12 @@ class CollectionListModel(private val collectionId: Long) : InMemoryModelBase<It
 
     override fun toId(item: Items): Long {
         return item.itemID
+    }
+
+    fun pickRandom(random: Random): Items? {
+        if (data.isEmpty()) {
+            return null
+        }
+        return data[random.nextInt(0, data.size)]
     }
 }

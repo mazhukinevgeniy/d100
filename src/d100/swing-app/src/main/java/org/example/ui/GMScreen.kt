@@ -1,6 +1,7 @@
 package org.example.ui
 
 import org.example.controller.ModelProvider
+import org.example.tables.Objects
 import org.example.ui.components.GeneratedObjectList
 import org.example.ui.components.PromptTextField
 import java.awt.Component
@@ -20,7 +21,12 @@ class GMScreen(
             constraints.gridx = 0
             constraints.gridy = 0
             constraints.gridwidth = 2
-            root.add(JLabel("placeholder for picker"), constraints)
+            val comboBox = JComboBox(modelProvider.objectListModel).also {
+                if (modelProvider.objectListModel.size > 0) {
+                    it.selectedIndex = 0
+                }
+            }
+            root.add(comboBox, constraints)
 
             constraints.gridx = 0
             constraints.gridy = 1
@@ -38,10 +44,12 @@ class GMScreen(
             constraints.anchor = GridBagConstraints.CENTER
             root.add(JButton("Generate").also {
                 it.addActionListener {
-                    modelProvider.objectGenerationHistoryListModel.generateObject(
-                        //TODO proper
-                        0, noteField.text
-                    )
+                    when (val selected = comboBox.selectedIndex) {
+                        -1 -> println("nothing to do, no object selected")
+                        else -> modelProvider.objectGenerationHistoryListModel.generateObject(
+                            modelProvider.objectListModel.itemId(selected), noteField.text
+                        )
+                    }
                 }
             }, constraints)
 

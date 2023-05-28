@@ -37,6 +37,8 @@ CREATE TABLE IF NOT EXISTS ObjectGenerations (
     FOREIGN KEY (objectID) REFERENCES Objects(objectID)
 );
 
+-- linkId primary key is important because it allows duplicate components
+-- (e.g. ship can have two guns, and they might be the same)
 CREATE TABLE IF NOT EXISTS GeneratedComponents (
     genLinkID INTEGER PRIMARY KEY AUTOINCREMENT,
     generationID INTEGER NOT NULL,

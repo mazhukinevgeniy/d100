@@ -9,8 +9,6 @@ import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.ScrollPaneConstants
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
 
@@ -55,8 +53,6 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
 }
 
 class GeneratedObjectList(val model: HistoryListModel) : JPanel() {
-
-
     init {
         layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
