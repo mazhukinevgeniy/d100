@@ -1,11 +1,10 @@
 package org.example.listmodels
 
-import org.example.tables.Collections
 import org.example.tables.DbAccessor
 import org.example.tables.Items
-import javax.swing.event.ListDataListener
+import kotlin.random.Random
 
-class ItemListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
+class CollectionListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
     object : QueryRunner<Items> {
         private val queries = DbAccessor.database.itemQueries
 
@@ -28,5 +27,12 @@ class ItemListModel(private val collectionId: Long) : InMemoryModelBase<Items>(
 
     override fun toId(item: Items): Long {
         return item.itemID
+    }
+
+    fun pickRandom(random: Random): Items? {
+        if (data.isEmpty()) {
+            return null
+        }
+        return data[random.nextInt(0, data.size)]
     }
 }

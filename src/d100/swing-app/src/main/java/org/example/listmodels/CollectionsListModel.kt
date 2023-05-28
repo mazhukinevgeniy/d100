@@ -1,5 +1,6 @@
 package org.example.listmodels
 
+import org.example.controller.ModelProvider
 import org.example.tables.Collections
 import org.example.tables.DbAccessor
 import javax.swing.AbstractListModel
@@ -10,7 +11,9 @@ class CollectionPickerView(val source: Collections) {
     }
 }
 
-class CollectionsListModel : InMemoryModelBase<Collections>(
+class CollectionsListModel(
+    private val modelProvider: ModelProvider
+) : InMemoryModelBase<Collections>(
     object : QueryRunner<Collections> {
         private val queries = DbAccessor.database.collectionQueries
 
@@ -33,6 +36,14 @@ class CollectionsListModel : InMemoryModelBase<Collections>(
 
     override fun toString(item: Collections): String {
         return item.name
+    }
+
+    override fun onItemAdded(newItem: Collections) {
+        val objectModel = modelProvider.objectListModel
+        objectModel.add(newItem.name)
+        modelProvider.getObjectComponentModel(
+            objectModel.getUnderlyingItemAt(objectModel.size - 1).objectID
+        ).add(newItem.collectionID)
     }
 
     fun simplePickerModel(): Array<CollectionPickerView> {

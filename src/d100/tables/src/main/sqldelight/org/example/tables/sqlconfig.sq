@@ -30,15 +30,21 @@ CREATE TABLE IF NOT EXISTS ObjectComponents (
 
 CREATE INDEX IF NOT EXISTS componentsByObject ON ObjectComponents(objectID);
 
-CREATE TABLE IF NOT EXISTS Sessions (
-    sessionID INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS ObjectGenerations (
+    generationID INTEGER PRIMARY KEY AUTOINCREMENT,
+    objectID INTEGER NOT NULL,
+    notes TEXT NOT NULL,
+    FOREIGN KEY (objectID) REFERENCES Objects(objectID)
 );
 
-CREATE TABLE IF NOT EXISTS SessionNotes (
-    noteID INTEGER PRIMARY KEY AUTOINCREMENT,
-    sessionID INTEGER NOT NULL,
-    notes TEXT NOT NULL,
-    generated TEXT NOT NULL,
-    FOREIGN KEY (sessionID) REFERENCES Sessions(sessionID)
+-- linkId primary key is important because it allows duplicate components
+-- (e.g. ship can have two guns, and they might be the same)
+CREATE TABLE IF NOT EXISTS GeneratedComponents (
+    genLinkID INTEGER PRIMARY KEY AUTOINCREMENT,
+    generationID INTEGER NOT NULL,
+    itemID INTEGER NOT NULL,
+    FOREIGN KEY (generationID) REFERENCES ObjectGenerations(generationID),
+    FOREIGN KEY (itemID) REFERENCES Items(itemID)
 );
+
+CREATE INDEX IF NOT EXISTS componentsByGeneration ON GeneratedComponents(generationID);

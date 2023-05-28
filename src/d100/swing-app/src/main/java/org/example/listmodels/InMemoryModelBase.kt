@@ -1,6 +1,7 @@
 package org.example.listmodels
 
 import javax.swing.AbstractListModel
+import javax.swing.ComboBoxModel
 
 interface QueryRunner<ItemType> {
 
@@ -12,16 +13,21 @@ interface QueryRunner<ItemType> {
 
 abstract class InMemoryModelBase<ItemType>(
     private val queryRunner: QueryRunner<ItemType>
-) : AbstractListModel<String>(), ExtendedListModel<String> {
+) : AbstractListModel<String>(), ExtendedListModel<String>, ComboBoxModel<String> {
     protected val data = ArrayList<ItemType>(queryRunner.selectAll())
+    private var selection: Any? = null
 
     final override fun getSize(): Int {
         return data.size
     }
 
-    final override fun getElementAt(index: Int): String {
+    fun getUnderlyingItemAt(index: Int): ItemType {
         require(index in data.indices)
-        return toString(data[index])
+        return data[index]
+    }
+
+    final override fun getElementAt(index: Int): String {
+        return toString(getUnderlyingItemAt(index))
     }
 
     final override fun add(value: String) {
@@ -30,14 +36,21 @@ abstract class InMemoryModelBase<ItemType>(
         if (data.isEmpty()) {
             data.addAll(queryRunner.selectAll())
             if (data.isNotEmpty()) {
-                fireIntervalAdded(this, 0, data.size - 1)
+                fireIntervalAddedWithRawItem(0, data.size - 1)
             }
         } else {
             val lastSize = data.size
             data.addAll(queryRunner.selectSince(toId(data.last())))
             if (data.size > lastSize) {
-                fireIntervalAdded(this, lastSize, data.size - 1)
+                fireIntervalAddedWithRawItem(lastSize, data.size - 1)
             }
+        }
+    }
+
+    private fun fireIntervalAddedWithRawItem(first: Int, last: Int) {
+        fireIntervalAdded(this, first, last)
+        for (i in first..last) {
+            onItemAdded(data[i])
         }
     }
 
@@ -46,7 +59,20 @@ abstract class InMemoryModelBase<ItemType>(
         return toId(data[index])
     }
 
+    override fun setSelectedItem(anItem: Any?) {
+        selection = anItem
+        fireContentsChanged(this, -1, -1)
+    }
+
+    override fun getSelectedItem(): Any? {
+        return selection
+    }
+
     abstract fun toString(item: ItemType): String
 
     abstract fun toId(item: ItemType): Long
+
+    open fun onItemAdded(newItem: ItemType) {
+        // do nothing by default
+    }
 }

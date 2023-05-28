@@ -1,24 +1,46 @@
 package org.example.controller
 
 import org.example.listmodels.*
+import org.example.tables.DbAccessor
+import org.example.tables.SelectComponents
 import org.example.ui.Screen
 import org.example.ui.ScreenManager
 import java.awt.Container
+import java.util.Date
+import kotlin.random.Random
 
 open class ModelProvider {
-    val collectionsListModel: CollectionsListModel by lazy {
-        return@lazy CollectionsListModel()
-    }
+    val random = Random(System.currentTimeMillis())
+
+    private val collectionModels: HashMap<Long, CollectionListModel> = HashMap()
+    private val objectComponentModels: HashMap<Long, ObjectComponentsListModel> = HashMap()
+
     val objectListModel: ObjectListModel by lazy {
         return@lazy ObjectListModel()
     }
-
-    fun createItemModel(collectionId: Long): ItemListModel {
-        return ItemListModel(collectionId)
+    val collectionsListModel: CollectionsListModel by lazy {
+        return@lazy CollectionsListModel(this)
+    }
+    val objectGenerationHistoryListModel: HistoryListModel by lazy {
+        return@lazy HistoryListModel(this)
     }
 
-    fun createObjectComponentModel(objectId: Long): ObjectComponentsListModel {
-        return ObjectComponentsListModel(objectId)
+    fun getCollectionModel(collectionId: Long): CollectionListModel {
+        if (collectionId !in collectionModels) {
+            collectionModels[collectionId] = CollectionListModel(collectionId)
+        }
+        return collectionModels[collectionId]!!
+    }
+
+    fun getObjectComponentModel(objectId: Long): ObjectComponentsListModel {
+        if (objectId !in objectComponentModels) {
+            objectComponentModels[objectId] = ObjectComponentsListModel(objectId)
+        }
+        return objectComponentModels[objectId]!!
+    }
+
+    fun getGeneratedComponentModel(generationId: Long): List<SelectComponents> {
+        return DbAccessor.database.generationQueries.selectComponents(generationId).executeAsList()
     }
 }
 

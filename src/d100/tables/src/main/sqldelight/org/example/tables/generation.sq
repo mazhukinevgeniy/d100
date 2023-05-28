@@ -1,0 +1,40 @@
+selectAllIds:
+SELECT a.generationID generationID, a.objectID objectID, a.notes notes, b.name objectName
+FROM
+    ObjectGenerations a
+INNER JOIN
+    Objects b
+ON a.objectID = b.objectID
+ORDER BY a.generationID;
+
+selectGenerationIdsSince:
+SELECT a.generationID generationID, a.objectID objectID, a.notes notes, b.name objectName
+FROM
+    ObjectGenerations a
+INNER JOIN
+    Objects b
+ON a.objectID = b.objectID
+WHERE a.generationID > ?
+ORDER BY a.generationID;
+
+selectComponents:
+SELECT
+    e.name tableName,
+    d.name generatedValue
+FROM ObjectGenerations a
+INNER JOIN GeneratedComponents b
+    ON a.generationID = b.generationID
+INNER JOIN Items d
+    ON d.itemID = b.itemID
+INNER JOIN Collections e
+    ON e.collectionID = d.collectionID
+WHERE a.generationID = ?
+ORDER BY b.genLinkID;
+
+insertGeneration:
+INSERT INTO ObjectGenerations(objectID, notes)
+VALUES (?, ?);
+
+insertComponent:
+INSERT INTO GeneratedComponents(generationID, itemID)
+VALUES (?, ?);
