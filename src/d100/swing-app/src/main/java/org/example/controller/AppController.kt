@@ -1,6 +1,8 @@
 package org.example.controller
 
 import org.example.listmodels.*
+import org.example.tables.DbAccessor
+import org.example.tables.SelectComponents
 import org.example.ui.Screen
 import org.example.ui.ScreenManager
 import java.awt.Container
@@ -16,7 +18,7 @@ open class ModelProvider {
         return@lazy CollectionsListModel(this)
     }
     val objectGenerationHistoryListModel: HistoryListModel by lazy {
-        return@lazy HistoryListModel()
+        return@lazy HistoryListModel(this)
     }
 
     fun getCollectionModel(collectionId: Long): CollectionListModel {
@@ -31,6 +33,10 @@ open class ModelProvider {
             objectComponentModels[objectId] = ObjectComponentsListModel(objectId)
         }
         return objectComponentModels[objectId]!!
+    }
+
+    fun getGeneratedComponentModel(generationId: Long): List<SelectComponents> {
+        return DbAccessor.database.generationQueries.selectComponents(generationId).executeAsList()
     }
 }
 
