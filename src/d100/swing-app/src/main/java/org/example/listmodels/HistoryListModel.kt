@@ -6,11 +6,22 @@ import org.example.tables.SelectAllIds
 import org.example.tables.SelectComponents
 import javax.swing.AbstractListModel
 
-data class HistoryItem(
+class HistoryItem(
     val objectName: String,
     val note: String,
-    val components: List<SelectComponents>
-)
+    val components: List<SelectComponents>,
+    private val modelProvider: ModelProvider
+) {
+    fun reroll(source: SelectComponents): SelectComponents {
+        val next = modelProvider.getCollectionModel(source.collectionID).pickRandom(modelProvider.random)
+        if (next != null) {
+            DbAccessor.database.generationQueries.updateGenerationLink(next.itemID, source.genLinkID)
+            return source.copy(generatedValue = next.name)
+        }
+        println("can't reroll, perhaps collection was cleared")
+        return source
+    }
+}
 
 class HistoryListModel(private val modelProvider: ModelProvider) : AbstractListModel<SelectAllIds>() {
     private val queries = DbAccessor.database.generationQueries
@@ -55,7 +66,8 @@ class HistoryListModel(private val modelProvider: ModelProvider) : AbstractListM
         return HistoryItem(
             source.objectName,
             source.notes,
-            modelProvider.getGeneratedComponentModel(source.generationID)
+            modelProvider.getGeneratedComponentModel(source.generationID),
+            modelProvider
         )
     }
 }

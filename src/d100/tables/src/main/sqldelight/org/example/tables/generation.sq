@@ -20,7 +20,9 @@ ORDER BY a.generationID;
 selectComponents:
 SELECT
     e.name tableName,
-    d.name generatedValue
+    d.name generatedValue,
+    e.collectionID collectionID,
+    b.genLinkID genLinkID
 FROM ObjectGenerations a
 INNER JOIN GeneratedComponents b
     ON a.generationID = b.generationID
@@ -38,3 +40,8 @@ VALUES (?, ?);
 insertComponent:
 INSERT INTO GeneratedComponents(generationID, itemID)
 VALUES (?, ?);
+
+updateGenerationLink:
+UPDATE GeneratedComponents
+SET itemID = ?
+WHERE genLinkID = ?;

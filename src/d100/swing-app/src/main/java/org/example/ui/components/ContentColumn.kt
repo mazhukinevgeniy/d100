@@ -4,7 +4,10 @@ import org.example.listmodels.ExtendedListModel
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import javax.swing.*
+import javax.swing.JList
+import javax.swing.JPanel
+import javax.swing.JScrollPane
+import javax.swing.ListSelectionModel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
 

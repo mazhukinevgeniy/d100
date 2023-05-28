@@ -1,7 +1,6 @@
 package org.example.ui
 
 import org.example.controller.ModelProvider
-import org.example.tables.Objects
 import org.example.ui.components.GeneratedObjectList
 import org.example.ui.components.PromptTextField
 import java.awt.Component
@@ -61,10 +60,13 @@ class GMScreen(
             constraints.weightx = 1.0
             constraints.weighty = 1.0
             root.add(
-                JScrollPane(GeneratedObjectList(modelProvider.objectGenerationHistoryListModel),
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-            ), constraints)
+                JScrollPane(
+                    GeneratedObjectList(modelProvider.objectGenerationHistoryListModel),
+                    ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+                ),
+                constraints
+            )
         }
     }
 
