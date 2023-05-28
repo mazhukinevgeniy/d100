@@ -2,6 +2,7 @@ package org.example.ui.components
 
 import org.example.listmodels.HistoryItem
 import org.example.listmodels.HistoryListModel
+import java.awt.Font
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.font.TextAttribute
@@ -11,6 +12,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
+import javax.swing.text.AttributeSet.FontAttribute
 
 private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
     init {
@@ -26,7 +28,9 @@ private class ObjectView(historyItem: HistoryItem) : JPanel(GridBagLayout()) {
             constraints.gridy++
 
             constraints.gridx = 0
-            add(JButton("\uFE0F"), constraints)
+            add(JButton("\uD83D\uDD04").also {
+                it.font = Font.getFont(Font.SERIF)
+            }, constraints)
 
             constraints.gridx = 1
             add(JLabel("${row.tableName}: "), constraints)
