@@ -34,6 +34,9 @@ class ObjectsScreen(
                         }
                         (itemCardPane.layout as CardLayout).show(itemCardPane, id.toString())
                     }
+
+                    override fun handlePopupRequest(id: Long, x: Int, y: Int) {
+                    }
                 })
             },
             itemCardPane
