@@ -1,5 +1,6 @@
 package org.example.ui
 
+import org.example.controller.AppController
 import org.example.controller.ModelProvider
 import org.example.listmodels.ExtendedListModel
 import org.example.ui.components.ContentColumn
@@ -41,7 +42,7 @@ class TablesScreen(
                         val menu = JPopupMenu()
                         menu.add(JMenuItem("Copy").also { menuItem ->
                             menuItem.addActionListener {
-                                println("todo")
+                                AppController.exporter.sendTableToClipboard(id)
                             }
                         })
                         menu.show(it, x, y)

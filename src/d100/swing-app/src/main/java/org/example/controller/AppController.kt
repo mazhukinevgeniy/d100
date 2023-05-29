@@ -46,6 +46,7 @@ open class ModelProvider {
 object AppController : ModelProvider() {
 
     var screenManager: ScreenManager? = null
+    var exporter = Exporter(this)
 
     fun onInitUi(contentPane: Container) {
         screenManager = ScreenManager(contentPane, this as ModelProvider).also {
