@@ -32,6 +32,9 @@ abstract class InMemoryModelBase<ItemType>(
 
     final override fun add(value: String) {
         for (singularValue in value.split(',')) {
+            if (singularValue.isEmpty()) {
+                continue
+            }
             queryRunner.insert(singularValue)
         }
 

@@ -4,6 +4,8 @@ import org.example.listmodels.ExtendedListModel
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JScrollPane
@@ -12,11 +14,13 @@ import javax.swing.border.EmptyBorder
 import javax.swing.event.ListDataEvent
 import javax.swing.event.ListDataListener
 
+
 class ContentColumn<Model : ExtendedListModel<String>>(
     private val model: Model, itemName: String
 ) : JPanel(GridBagLayout()) {
     public interface Subscriber {
         fun handleItemSelection(id: Long)
+        fun handlePopupRequest(id: Long, x: Int, y: Int)
     }
 
     private val subscribers: ArrayList<Subscriber> = ArrayList()
@@ -51,6 +55,29 @@ class ContentColumn<Model : ExtendedListModel<String>>(
             it.addListSelectionListener { _ ->
                 onSelection()
             }
+            it.addMouseListener(object : MouseAdapter() {
+                override fun mousePressed(event: MouseEvent?) {
+                    handle(event)
+                }
+
+                override fun mouseReleased(event: MouseEvent?) {
+                    handle(event)
+                }
+
+                private fun handle(event: MouseEvent?) {
+                    if (event?.isPopupTrigger != true) {
+                        return
+                    }
+
+                    val clicked = list.locationToIndex(event.getPoint())
+                    if (clicked != -1 && list.getCellBounds(clicked, clicked).contains(event.getPoint())) {
+                        list.selectedIndex = clicked
+                        for (subscriber in subscribers) {
+                            subscriber.handlePopupRequest(model.itemId(clicked), event.x, event.y)
+                        }
+                    }
+                }
+            })
             it.border = EmptyBorder(2, 2, 2, 2)
             it.selectionMode = ListSelectionModel.SINGLE_SELECTION
             it.layoutOrientation = JList.HORIZONTAL_WRAP

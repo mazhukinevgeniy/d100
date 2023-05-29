@@ -7,7 +7,9 @@ import java.awt.CardLayout
 import java.awt.Component
 import java.awt.Container
 import java.awt.Dimension
+import javax.swing.JMenuItem
 import javax.swing.JPanel
+import javax.swing.JPopupMenu
 import javax.swing.JSplitPane
 
 
@@ -33,6 +35,16 @@ class TablesScreen(
                             }
                         }
                         (itemCardPane.layout as CardLayout).show(itemCardPane, id.toString())
+                    }
+
+                    override fun handlePopupRequest(id: Long, x: Int, y: Int) {
+                        val menu = JPopupMenu()
+                        menu.add(JMenuItem("Copy").also { menuItem ->
+                            menuItem.addActionListener {
+                                println("todo")
+                            }
+                        })
+                        menu.show(it, x, y)
                     }
                 })
             },
